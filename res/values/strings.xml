@@ -1,0 +1,67 @@
+<!--
+  Copyright 2013 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">Interactive Chart Demo</string>
+    <string name="app_description">A sample application that allows you to navigate a simple line graph using touch gestures.</string>
+    <string name="action_zoom_in">Demo zoom in</string>
+    <string name="action_zoom_out">Demo zoom out</string>
+    <string name="action_pan_left">Demo pan left</string>
+    <string name="action_pan_right">Demo pan right</string>
+    <string name="action_pan_up">Demo pan up</string>
+    <string name="action_pan_down">Demo pan down</string>
+    <string name="paint">Paint</string>
+    <string name="sample">Sample</string>
+    <string name="erase">Erase</string>
+    <string name="select">Select</string>
+    <string name="lighten">Lighten</string>
+    <string name="darken">Darken</string>
+    <string name="shade">Shade</string>
+    <string name="shade_cube">Shade_cube</string>
+    <string name="move">Move</string>
+    <string name="area">Area</string>
+    <string name="copy">Copy</string>
+    <string name="cut">Cut</string>
+    <string name="paste">Paste</string>
+    <string name="selection_tools">Selection Tools</string>
+    <string name="undo">Undo</string>
+    <string name="undo_redo_tools">Undo/Redo Tools</string>
+    <string name="redo">Redo</string>
+    <string name="recent_files">Recent Files…</string>
+    <string name="recent">Recent…</string>
+    <string name="new_scene">New Scene</string>
+    <string name="neww">New</string>
+    <string name="open_scene">Open Scene…</string>
+    <string name="open">Open…</string>
+    <string name="save_as">Save As…</string>
+    <string name="export_to_image_file">Export To Image File…</string>
+    <string name="export">Export…</string>
+    <string name="import_image_file">Import Image File…</string>
+    <string name="importt">Import…</string>
+    <string name="scene_options">Scene Options</string>
+    <string name="config_options">Config Options</string>
+    <string name="save">Save</string>
+    <string name="current_side">Current Side</string>
+    <string name="other_sides">Other Sides</string>
+    <string name="all_sides">All Sides</string>
+    <string name="select_all">Select All</string>
+    <string name="clear_all_selections">Clear All Selections</string>
+    <string name="select_all_visible">Select All Visible</string>
+    <string name="undo_to_branch">Undo To Branch</string>
+    <string name="redo_to_branch">Redo To Branch</string>
+    <string name="new_branch">New Branch</string>
+    <string name="choose_branch">Choose Branch</string>
+</resources>

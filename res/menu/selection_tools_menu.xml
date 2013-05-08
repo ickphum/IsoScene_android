@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/select_all" android:title="@string/select_all"></item>
+    <item android:id="@+id/clear_all_selections" android:title="@string/clear_all_selections"></item>
+    <item android:id="@+id/select_all_visible" android:title="@string/select_all_visible"></item>
+    
+
+</menu>

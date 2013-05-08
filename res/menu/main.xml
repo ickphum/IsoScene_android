@@ -1,0 +1,32 @@
+<!--
+  Copyright 2013 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/recent_files" android:titleCondensed="@string/recent" android:title="@string/recent_files" android:showAsAction="never">
+        <menu>
+            <item android:id="@+id/test1" android:title=""/>
+        </menu>
+    </item>
+    <item android:id="@+id/new_scene" android:titleCondensed="@string/neww" android:title="@string/new_scene"></item>
+    <item android:id="@+id/open_scene" android:titleCondensed="@string/open" android:title="@string/open_scene"></item>
+    <item android:id="@+id/save_as" android:title="@string/save_as"></item>
+    <item android:id="@+id/export_scene" android:titleCondensed="@string/export" android:title="@string/export_to_image_file"></item>
+    <item android:id="@+id/import_image" android:titleCondensed="@string/importt" android:title="@string/import_image_file"></item>
+    <item android:id="@+id/scene_options" android:title="@string/scene_options"></item>
+    <item android:id="@+id/config_options" android:title="@string/config_options"></item>
+    <item android:id="@+id/save" android:title="@string/save"></item>
+    
+</menu>
