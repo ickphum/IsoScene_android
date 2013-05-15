@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    xmlns:app="http://schemas.android.com/apk/res/com.ickphum.android.isoscene">
+
+    <com.ickphum.android.isoview.NewColorPickerView
+        android:id="@+id/colorPicker"
+        android:layout_width="280dp"
+        android:layout_height="360dp"
+        app:dataColor3="@color/test"
+        app:dataThickness3="@dimen/button_horizontal_padding" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" >
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="selectColor"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/cancel" />
+
+    </LinearLayout>
+
+</LinearLayout>

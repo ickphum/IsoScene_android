@@ -45,28 +45,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
-                <com.ickphum.android.isoview.SlowClickImageButton
+                <ImageButton
                     android:id="@+id/paintButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/paint"
+                    android:onClick="changeAction"
                     android:paddingBottom="@dimen/button_vertical_padding"
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_paint_r" />
+                    android:src="@drawable/action_paint_r"
+                    android:tag="@string/paint" />
 
                 <ImageButton
                     android:id="@+id/sampleButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/sample"
+                    android:onClick="changeAction"
                     android:paddingBottom="@dimen/button_vertical_padding"
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
                     android:scaleType="center"
-                    android:src="@drawable/action_sample_r" />
+                    android:src="@drawable/action_sample_r"
+                    android:tag="@string/sample" />
 
             </TableRow>
 
@@ -81,22 +85,26 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/erase"
                     android:longClickable="true"
+                    android:onClick="changeAction"
                     android:paddingBottom="@dimen/button_vertical_padding"
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_erase_current_r" />
+                    android:src="@drawable/action_erase_current_r"
+                    android:tag="@string/erase" />
 
                 <ImageButton
                     android:id="@+id/selectButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/select"
+                    android:onClick="changeAction"
                     android:paddingBottom="@dimen/button_vertical_padding"
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_select_current_r" />
+                    android:src="@drawable/action_select_current_r"
+                    android:tag="@string/select" />
 
             </TableRow>
 
@@ -150,6 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/shade_cube"
+                    android:onClick="changeAction"
                     android:paddingBottom="@dimen/button_vertical_padding"
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"

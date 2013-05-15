@@ -1,5 +1,12 @@
 package com.ickphum.android.isoview;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.ickphum.android.isoscene.R;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,6 +20,7 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +47,8 @@ public class IsoCube extends View {
     private Bitmap cubeFrameBitmap;
     private Handler longPressTimer = new Handler();
     private Boolean pressInProgress = false;
+    private SparseArray<Bitmap> cubeBitmap = new SparseArray<Bitmap>();
+    private Map<IsoFrame.CubeSide, List<Integer>> sideOffsets = new HashMap<IsoFrame.CubeSide, List<Integer>>();
     
     private Runnable longPressTimerCallback = new Runnable() {
     	@Override
@@ -85,9 +95,24 @@ public class IsoCube extends View {
 		}
 		/*
 		*/
-		
+		List<Integer> actions = Arrays.asList(
+				R.drawable.paint, 
+				R.drawable.sample,
+				R.drawable.erase,
+				R.drawable.select,
+				R.drawable.small_paste,
+				R.drawable.shade_cube,
+				R.drawable.import_image
+				);
+		for(Integer action: actions) {
+			cubeBitmap.put(action, BitmapFactory.decodeResource(getResources(), action));
+		}
 		cubeFrameBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cube);
-		
+
+        sideOffsets.put(IsoFrame.CubeSide.LEFT, Arrays.asList(-40,3));
+        sideOffsets.put(IsoFrame.CubeSide.TOP, Arrays.asList(-15,-44));
+        sideOffsets.put(IsoFrame.CubeSide.RIGHT, Arrays.asList(10,-3));
+        
 		// Create a gesture detector to handle onTouch messages
         if (! this.isInEditMode()) {
         	mDetector = new GestureDetectorCompat(IsoCube.this.getContext(), new MyGestureListener());
@@ -176,14 +201,59 @@ public class IsoCube extends View {
         super.onDraw(canvas);
         Log.d("onDraw", "start");
         
+        
         canvas.translate(mHalfWidth+8, mHalfHeight + 5);
         canvas.drawPath(mPaths[0], mPaints[0]);
         canvas.drawPath(mPaths[1], mPaints[1]);
         canvas.drawPath(mPaths[2], mPaints[2]);
         //canvas.translate(0,0);
         canvas.translate(-(mHalfWidth+8), -(mHalfHeight+5));
+        
+        // can't do the tricky stuff in the editor
+        if (this.isInEditMode()) {
+        	return;
+        }
+        
+        IsoFrame frame = (IsoFrame) getContext();
+        IsoFrame.Action action = frame.getAction();
+        
+        int side_bitmap = frame.actionMatchesErase()
+        	? R.drawable.erase
+        	: frame.actionMatchesSelect()
+        		? R.drawable.select
+        		: action == IsoFrame.Action.PASTE
+        			? R.drawable.small_paste
+        			: getResources().getIdentifier(action.toString().toLowerCase(), 
+        					"drawable", "com.ickphum.android.isoscene");
+
+        Bitmap actionBitmap = cubeBitmap.get(side_bitmap);
+
+        Log.d("onDraw", "action = " + frame.getAction().toString().toLowerCase() 
+        		+ ", side_bitmap_name = " + side_bitmap + ", bitmap = " + actionBitmap);
 
         canvas.drawBitmap(cubeFrameBitmap, 8, 0, mPaints[0]);
+        
+        List<IsoFrame.CubeSide> sides = null;
+        if (frame.actionMatchesAll() || action == IsoFrame.Action.PASTE) {
+        	sides = IsoFrame.getAllSides();
+        }
+        else {
+        	if (frame.actionMatchesOthers()) {
+        		sides = frame.getOtherSides();
+        	}
+        	else {
+                List<Integer> offset = sideOffsets.get(frame.getCubeSide()); 
+                canvas.drawBitmap(actionBitmap, 
+                		mHalfWidth + 8 + offset.get(0), mHalfHeight + 5 + offset.get(1), mPaints[0]);       	
+        	}
+        }
+        if (sides != null) {
+	        for (IsoFrame.CubeSide side: sides) {
+	            List<Integer> offset = sideOffsets.get(side); 
+	            canvas.drawBitmap(actionBitmap, 
+	            		mHalfWidth + 8 + offset.get(0), mHalfHeight + 5 + offset.get(1), mPaints[0]);       	
+	        }
+        }
 
         //canvas.drawLine(0,0,100,100,mPaints[0]);
     }

@@ -64,4 +64,6 @@
     <string name="redo_to_branch">Redo To Branch</string>
     <string name="new_branch">New Branch</string>
     <string name="choose_branch">Choose Branch</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>

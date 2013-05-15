@@ -7,14 +7,15 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
 public class SimpleCustomView extends View {
 
     // Current attribute values and Paints.
-    private float mDataThickness;
-    private int mDataColor;
+    private float mDataThickness = 3;
+    private int mDataColor = 0xff0000;
     private Paint mDataPaint;
     private int mWidth;
     private int mHeight;
@@ -88,6 +89,7 @@ public class SimpleCustomView extends View {
         super.onDraw(canvas);
 
         canvas.drawLine(0,  0, mWidth, mHeight, mDataPaint);
+        Log.d("onDraw", "draw to " + mWidth + ","  + mHeight );
     }
 
 

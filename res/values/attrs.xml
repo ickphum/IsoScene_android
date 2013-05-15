@@ -32,6 +32,11 @@
         <attr name="dataColor2" format="color" />
     </declare-styleable>
     
+    <declare-styleable name="NewColorPickerView">
+        <attr name="dataThickness3" format="dimension" />
+        <attr name="dataColor3" format="color" />
+    </declare-styleable>
+    
     <declare-styleable name="IsoCube">
         <attr name="action" format="string" />
         <attr name="leftColor" format="color" />
