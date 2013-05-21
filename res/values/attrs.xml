@@ -27,12 +27,25 @@
         <attr name="gridColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="IsoCanvas">
+        <attr name="labelTextSize4" format="dimension" />
+        <attr name="labelTextColor4" format="color" />
+        <attr name="labelSeparation4" format="dimension" />
+        <attr name="axisThickness4" format="dimension" />
+        <attr name="axisColor4" format="color" />
+        <attr name="dataThickness4" format="dimension" />
+        <attr name="dataColor4" format="color" />
+        <attr name="gridThickness4" format="dimension" />
+        <attr name="gridColor4" format="color" />
+        <attr name="backgroundLineColor" format="color" />
+    </declare-styleable>
+    
     <declare-styleable name="SimpleCustomView">
         <attr name="dataThickness2" format="dimension" />
         <attr name="dataColor2" format="color" />
     </declare-styleable>
     
-    <declare-styleable name="NewColorPickerView">
+    <declare-styleable name="ColorPickerView">
         <attr name="dataThickness3" format="dimension" />
         <attr name="dataColor3" format="color" />
     </declare-styleable>

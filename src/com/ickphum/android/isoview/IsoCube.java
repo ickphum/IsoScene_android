@@ -1,13 +1,12 @@
 package com.ickphum.android.isoview;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import com.ickphum.android.isoscene.R;
+import com.ickphum.android.isoview.IsoFrame.CubeSide;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -37,11 +36,10 @@ public class IsoCube extends View {
     }
 
 	//private String mAction;
-	private int[] mColors = new int[3];
+	//private int[] mColors = new int[3];
 	
 	private Paint[] mPaints = new Paint[3];
     private Path[] mPaths = new Path[3];
-    private Path	mPath = new Path();
     private float mHalfWidth;
     private float mHalfHeight;
     private Bitmap cubeFrameBitmap;
@@ -79,18 +77,19 @@ public class IsoCube extends View {
 		        R.styleable.IsoCube,
 		        0, 0);
 
+		int[] colors = new int[3];
 		try {
 			//mAction = a.getString(R.styleable.IsoCube_action);
-			mColors[0] = a.getColor(R.styleable.IsoCube_leftColor, 0);
-			mColors[1] = a.getColor(R.styleable.IsoCube_topColor, 0);
-			mColors[2] = a.getColor(R.styleable.IsoCube_rightColor, 0);
+			colors[0] = a.getColor(R.styleable.IsoCube_leftColor, 0);
+			colors[1] = a.getColor(R.styleable.IsoCube_topColor, 0);
+			colors[2] = a.getColor(R.styleable.IsoCube_rightColor, 0);
 		} finally {
 			a.recycle();
 		}
 		
 		for (int i=0; i<3; i++) {
 			mPaints[i] = new Paint();
-			mPaints[i].setColor(mColors[i]);
+			mPaints[i].setColor(colors[i]);
 			mPaints[i].setStyle(Paint.Style.FILL);
 		}
 		/*
@@ -160,37 +159,26 @@ public class IsoCube extends View {
         	}
         }
         
-        mHalfWidth = (float)52.5;
-        mHalfHeight = mHalfWidth;
-        float quarter_height = (float) 28;
+        mHalfWidth = (float)49;
+        mHalfHeight = (float)56;
+        float quarter_height = mHalfHeight / 2;
         Log.d("onSizeChanged", "dims: " + mHalfWidth + "," + mHalfHeight + "," + quarter_height);
         
         mPaths[0].moveTo(0, 0);
-        Log.d("onSizeChanged", "path 0 point 1: " + (- mHalfWidth) + "," + (- quarter_height));
-        mPaths[0].lineTo(- mHalfWidth + 3, - quarter_height);
-        Log.d("onSizeChanged", "path 0 point 2: " + (- mHalfWidth) + "," + (quarter_height));
-        mPaths[0].lineTo(- mHalfWidth + 3, quarter_height);
-        Log.d("onSizeChanged", "path 0 point 3: 0 " + (quarter_height * 2));
+        mPaths[0].lineTo(- mHalfWidth, - quarter_height);
+        mPaths[0].lineTo(- mHalfWidth, quarter_height);
         mPaths[0].lineTo(0, quarter_height * 2);
         mPaths[0].setFillType(Path.FillType.WINDING);
         
-        mPath = new Path();
-        mPath.moveTo(0, 0);
-        mPath.lineTo(- mHalfWidth + 3, - quarter_height);
-        mPath.lineTo(- mHalfWidth + 3, quarter_height);
-        mPath.lineTo(0, quarter_height * 2);
-        mPath.setFillType(Path.FillType.WINDING);
-
-        mPaths[1].moveTo(-mHalfWidth + 3, -quarter_height );
+        mPaths[1].moveTo(-mHalfWidth, -quarter_height );
         mPaths[1].lineTo(0, -quarter_height * 2 );
-        mPaths[1].lineTo(mHalfWidth - 3, -quarter_height );
+        mPaths[1].lineTo(mHalfWidth, -quarter_height );
         mPaths[1].lineTo(0, 0);
         mPaths[1].setFillType(Path.FillType.WINDING);
         
-
         mPaths[2].moveTo(0,0);
-        mPaths[2].lineTo(mHalfWidth - 3, -quarter_height);
-        mPaths[2].lineTo(mHalfWidth - 3, quarter_height);
+        mPaths[2].lineTo(mHalfWidth, -quarter_height);
+        mPaths[2].lineTo(mHalfWidth, quarter_height);
         mPaths[2].lineTo(0, quarter_height * 2);
         mPaths[2].setFillType(Path.FillType.WINDING);
 
@@ -199,15 +187,14 @@ public class IsoCube extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.d("onDraw", "start");
-        
-        
-        canvas.translate(mHalfWidth+8, mHalfHeight + 5);
+        Log.v("onDraw", "start");
+                
+        canvas.translate(mHalfWidth, mHalfHeight+1);
         canvas.drawPath(mPaths[0], mPaints[0]);
         canvas.drawPath(mPaths[1], mPaints[1]);
         canvas.drawPath(mPaths[2], mPaints[2]);
         //canvas.translate(0,0);
-        canvas.translate(-(mHalfWidth+8), -(mHalfHeight+5));
+        canvas.translate(-(mHalfWidth), -(mHalfHeight+1));
         
         // can't do the tricky stuff in the editor
         if (this.isInEditMode()) {
@@ -228,10 +215,12 @@ public class IsoCube extends View {
 
         Bitmap actionBitmap = cubeBitmap.get(side_bitmap);
 
-        Log.d("onDraw", "action = " + frame.getAction().toString().toLowerCase() 
+        Log.v("onDraw", "action = " + frame.getAction().toString().toLowerCase() 
         		+ ", side_bitmap_name = " + side_bitmap + ", bitmap = " + actionBitmap);
 
-        canvas.drawBitmap(cubeFrameBitmap, 8, 0, mPaints[0]);
+        //if (action == IsoFrame.Action.PAINT) {
+        	canvas.drawBitmap(cubeFrameBitmap, -1, -1, mPaints[0]);
+        //}
         
         List<IsoFrame.CubeSide> sides = null;
         if (frame.actionMatchesAll() || action == IsoFrame.Action.PASTE) {
@@ -244,14 +233,14 @@ public class IsoCube extends View {
         	else {
                 List<Integer> offset = sideOffsets.get(frame.getCubeSide()); 
                 canvas.drawBitmap(actionBitmap, 
-                		mHalfWidth + 8 + offset.get(0), mHalfHeight + 5 + offset.get(1), mPaints[0]);       	
+                		mHalfWidth + offset.get(0), mHalfHeight + offset.get(1), mPaints[0]);       	
         	}
         }
         if (sides != null) {
 	        for (IsoFrame.CubeSide side: sides) {
 	            List<Integer> offset = sideOffsets.get(side); 
 	            canvas.drawBitmap(actionBitmap, 
-	            		mHalfWidth + 8 + offset.get(0), mHalfHeight + 5 + offset.get(1), mPaints[0]);       	
+	            		mHalfWidth + offset.get(0), mHalfHeight + offset.get(1), mPaints[0]);       	
 	        }
         }
 
@@ -266,6 +255,7 @@ public class IsoCube extends View {
         switch(action) {
             case (MotionEvent.ACTION_DOWN) :
                 Log.d(DEBUG_TAG,"Action was DOWN: " + event);
+            	changeCubeSide(event);
             	longPressTimer.postDelayed(longPressTimerCallback, 
             			getResources().getInteger(R.integer.longPressMilliSecs));
             	pressInProgress = true;
@@ -295,8 +285,35 @@ public class IsoCube extends View {
         //this.mDetector.onTouchEvent(event);
         //return super.onTouchEvent(event);
     }
-    
-    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+    private void changeCubeSide(MotionEvent event) {
+		float rise = -(event.getY() - (this.getHeight()/2));
+		float run = event.getX() - (this.getWidth()/2);
+		
+		CubeSide newSide;
+		if (run != 0) {
+			float gradient = rise / run;
+			newSide = rise < 0
+				? run > 0
+					? CubeSide.RIGHT
+					: CubeSide.LEFT
+				: Math.abs(gradient) > 0.58
+					? CubeSide.TOP
+					: run > 0
+						? CubeSide.RIGHT
+						: CubeSide.LEFT;
+		}
+		else {
+			newSide = rise > 0
+				? CubeSide.TOP
+				: CubeSide.RIGHT;
+		}
+		
+		Log.d("changeCubeSide", "new side is " + newSide);
+		((IsoFrame) getContext()).setCubeSide(newSide);
+	}
+
+	class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "Gestures"; 
 
         @Override
@@ -354,5 +371,17 @@ public class IsoCube extends View {
         }
 
     }
+
+	public void newColor(CubeSide cubeSide, int color) {
+		
+		// set the new color for the appropriate side and redraw
+		mPaints[cubeSide.getIndex()].setColor(color);
+		invalidate();
+	}
+
+	public int getColor(CubeSide cubeSide) {
+		// TODO Auto-generated method stub
+		return mPaints[cubeSide.getIndex()].getColor();
+	}
 
 }

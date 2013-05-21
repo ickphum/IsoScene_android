@@ -27,13 +27,13 @@
         
         <com.ickphum.android.isoview.IsoCube
             android:id="@+id/cube"
-            android:layout_width="fill_parent"
+            android:layout_width="105dp"
             android:layout_height="119dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center_vertical|center_horizontal"
             app:action="paint"
-            app:leftColor="#f00"
-            app:rightColor="#0f0"
-            app:topColor="#00f" />
+            app:leftColor="#fff0"
+            app:rightColor="#f0ff"
+            app:topColor="#ff0f" />
         
         <TableLayout
             android:layout_width="wrap_content"
@@ -118,22 +118,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/lighten"
+                    android:onClick="lightenCurrentColor"
                     android:paddingBottom="@dimen/button_vertical_padding"
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_lighten_r" />
+                    android:src="@drawable/action_lighten_r"
+                    android:tag="@string/lighten" />
 
                 <ImageButton
                     android:id="@+id/darkenButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/darken"
+                    android:onClick="darkenCurrentColor"
                     android:paddingBottom="@dimen/button_vertical_padding"
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_darken_r" />
+                    android:src="@drawable/action_darken_r"
+                    android:tag="@string/darken" />
 
             </TableRow>
 
@@ -147,11 +151,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/shade"
+                    android:onClick="shadesFromCurrentColor"
                     android:paddingBottom="@dimen/button_vertical_padding"
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_shade_r" />
+                    android:src="@drawable/action_shade_r"
+                    android:tag="@string/shade" />
 
                 <ImageButton
                     android:id="@+id/shadeCubeButton"
@@ -163,7 +169,8 @@
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_shade_cube_r" />
+                    android:src="@drawable/action_shade_cube_r"
+                    android:tag="@string/shade_cube" />
 
             </TableRow>
 
@@ -349,14 +356,16 @@
 
         </TableLayout>
 
+
     </LinearLayout>
 
     <com.ickphum.android.isoview.InteractiveLineGraphView
         android:id="@+id/chart"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:padding="@dimen/chart_padding"
+        android:visibility="gone"
         app:axisColor="#d000"
         app:axisThickness="2dp"
         app:dataColor="#a6c"
@@ -367,4 +376,27 @@
         app:labelTextColor="#d000"
         app:labelTextSize="14sp" />
 
+    <com.ickphum.android.isoview.IsoCanvas
+        android:id="@+id/isoCanvas1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.1"
+        android:padding="@dimen/chart_padding"
+        app:axisColor4="#df0f"
+        app:axisThickness4="2dp"
+        app:backgroundLineColor="#f00b"
+        app:dataColor4="#a6c"
+        app:dataThickness4="8dp"
+        app:gridColor4="#2000"
+        app:gridThickness4="1dp"
+        app:labelSeparation4="10dp"
+        app:labelTextColor4="#d000"
+        app:labelTextSize4="14sp" />
+    
+    <com.ickphum.android.isoview.GLIsoCanvas
+        android:id="@+id/gLCanvas"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5" />
+    
 </LinearLayout>

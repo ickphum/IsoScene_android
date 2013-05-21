@@ -16,6 +16,7 @@
 
 package com.ickphum.android.isoview;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ import com.ickphum.android.isoscene.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
@@ -36,7 +38,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.support.v4.app.FragmentActivity;
 
-public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChangedListener {
+@SuppressLint("DefaultLocale")
+public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnColorChangedListener {
     //private InteractiveLineGraphView mGraphView;
 	
 	private boolean mMoveMode = false;
@@ -48,6 +51,13 @@ public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChan
 
 	public enum CubeSide {
 	    LEFT, TOP, RIGHT;
+	    public int getIndex() {
+	    	return this == LEFT
+	    		? 0
+	    		: this == TOP
+	    			? 1
+	    			: 2;
+	    }
 	}
 	private CubeSide mCubeSide = CubeSide.RIGHT;
 	private List<CubeSide> othersFromLeft = Arrays.asList(CubeSide.TOP, CubeSide.RIGHT);
@@ -59,6 +69,18 @@ public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChan
 	}
 	public void setCubeSide(CubeSide cubeSide) {
 		this.mCubeSide = cubeSide;
+		mCube.invalidate();
+		setButtonImage(Arrays.asList(
+				R.id.paintButton,
+				R.id.sampleButton,
+				R.id.eraseButton,
+				R.id.selectButton,
+				R.id.lightenButton,
+				R.id.darkenButton,
+				R.id.shadeButton,
+				R.id.shadeCubeButton
+				));
+
 	}
 	public List<CubeSide> getOtherSides() {
 		return mCubeSide == CubeSide.LEFT
@@ -102,7 +124,7 @@ public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChan
 	}
 	public void setAction(Action a) {
 		mAction = a;
-		findViewById(R.id.cube).invalidate();
+		mCube.invalidate();
 	}
 	public boolean actionMatchesErase() {
 		return mAction == Action.ERASE_ALL || mAction == Action.ERASE_OTHERS || mAction == Action.ERASE;
@@ -131,8 +153,7 @@ public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChan
 		this.eraseEffect = eraseEffect;
 		setButtonImage(Arrays.asList(R.id.eraseButton));
 	}
-	
-	
+		
 	private ToolEffect selectEffect = ToolEffect.CURRENT ;
 	public ToolEffect getSelectEffect() {
 		return selectEffect;
@@ -144,6 +165,10 @@ public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChan
 
 	// what tool are we choosing the effect for, erase or select.
 	private int mToolEffectActionId;
+	
+	// permanent reference to the cube
+	private IsoCube mCube;
+	private GLIsoCanvas glCanvas;
  
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +177,9 @@ public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChan
         
         registerForContextMenu(findViewById(R.id.eraseButton));
         registerForContextMenu(findViewById(R.id.selectButton));
+        
+        mCube = (IsoCube)findViewById(R.id.cube);
+        glCanvas = (GLIsoCanvas)findViewById(R.id.gLCanvas);
         
         buttonAction.put(R.id.paintButton, Action.PAINT);
         buttonAction.put(R.id.eraseButton, Action.ERASE);
@@ -166,7 +194,23 @@ public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChan
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
+    /** Remember to resume the glSurface  */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		glCanvas.onResume();
+		Log.d("onResume", "");
+	}
+
+	/** Also pause the glSurface  */
+	@Override
+	protected void onPause() {
+		super.onPause();
+		glCanvas.onPause();
+		Log.d("onPause", "");
+	}
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenuInfo menuInfo)
@@ -315,14 +359,82 @@ public class IsoFrame extends FragmentActivity implements TestDialog.OnColorChan
 					: R.drawable.area_r_off);
 	}
 	
+	// called by a slow click on the cube
 	public void chooseColor() {
-		TestDialog newFragment = new TestDialog();
+		ColorPickerDialog newFragment = new ColorPickerDialog();
 		newFragment.setListener(this);
 	    newFragment.show(getSupportFragmentManager(), "ikmdialog");
 	}
 	
+	// handler for a successful change, called from the dialog
 	public void colorChanged(String key, int color) {
 		Log.d("colorChanged", "new color chosen " + key + ", " + color);
+		
+		// color change events through here always affect the current side
+		mCube.newColor(getCubeSide(), color);
+	}
+	
+	public int getCurrentColor() {
+		return mCube.getColor(getCubeSide());
+	}
+	
+	public void lightenCurrentColor(View view) {
+		// called from lighten button
+		int change = 20;
+		int newColor = shadeColor(mCube.getColor(getCubeSide()), change); 
+		mCube.newColor(getCubeSide(), newColor);
+	}
+	
+	public void darkenCurrentColor(View view) {
+		// called from darken button
+		int change = 20;
+		int newColor = shadeColor(mCube.getColor(getCubeSide()), -change); 
+		mCube.newColor(getCubeSide(), newColor);
+	}
+	
+	private int shadeColor(int color, int adjustment) {
+
+		// change the specified color by adjusting r,g,b values
+		int[] rgb = { Color.red(color),Color.green(color),Color.blue(color) };
+		for (int i=0; i<3; i++) {
+			rgb[i] += adjustment;
+			rgb[i] = rgb[i] > 255
+				? 255
+				: rgb[i] < 0
+					? 0
+					: rgb[i];
+		}
+		return Color.rgb(rgb[0], rgb[1], rgb[2]);
+	}
+	
+	public void shadesFromCurrentColor(View view) {
+
+		// called from shade button; make the other sides shades of the current side
+		
+		// get the other shades in a list
+		List<Integer> shades = findShades(mCube.getColor(getCubeSide()));
+		
+		// we know the other shades are in a list corresponding
+		// to the other sides from getOtherSides()
+		int i = 0;
+		for (CubeSide cubeSide : getOtherSides()) {
+			mCube.newColor(cubeSide, shades.get(i++));
+		}
+	}
+	
+	private List<Integer> findShades(int color) {
+		// find the matching shades for the other sides based on the
+		// color of the current side 
+		int change = 20;
+	    CubeSide currentSide = getCubeSide();
+	    int[] relativeShade = {1,0,2};
+	    int currentIndex = currentSide.getIndex();
+	    List<Integer> shades = new ArrayList<Integer>();
+	    for(CubeSide otherSide: getOtherSides()) {
+	    	int otherIndex = otherSide.getIndex();
+	    	shades.add(shadeColor(color, change * (relativeShade[currentIndex] - relativeShade[otherIndex])));
+	    }
+		return shades;
 	}
     
 }

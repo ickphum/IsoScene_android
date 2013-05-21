@@ -5,7 +5,7 @@
     android:orientation="vertical" 
     xmlns:app="http://schemas.android.com/apk/res/com.ickphum.android.isoscene">
 
-    <com.ickphum.android.isoview.NewColorPickerView
+    <com.ickphum.android.isoview.ColorPickerView
         android:id="@+id/colorPicker"
         android:layout_width="280dp"
         android:layout_height="360dp"
@@ -28,7 +28,7 @@
             android:text="@string/ok" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"

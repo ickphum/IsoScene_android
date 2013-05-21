@@ -1,43 +1,59 @@
 package com.ickphum.android.isoview;
 
+import com.ickphum.android.isoscene.R;
+
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.ickphum.android.isoscene.R;
-import com.ickphum.android.isoview.ColorPickerDialog.OnColorChangedListener;
-
 
 public class ColorPickerView extends View {
-	private Paint mPaint;
+
+    // Current attribute values and Paints.
+    private Paint mPaint;
 	private float mCurrentHue = 0;
 	private int mCurrentX = 0, mCurrentY = 0;
-	private int mCurrentColor, mDefaultColor;
-	private final int[] mHueBarColors = new int[258];
-	private int[] mMainColors = new int[65536];
-	private OnColorChangedListener mListener;
-	
-	ColorPickerView(Context c) {
-		this(c, null, 0xff0000, 0xff00);
+	private int mCurrentColor = 0;
+	public int getCurrentColor() {
+		return mCurrentColor;
 	}
 
-	ColorPickerView(Context c, OnColorChangedListener l, int color, int defaultColor) {
-		super(c);
-		mListener = l;
-		mDefaultColor = defaultColor;
+	public void setCurrentColor(int mCurrentColor) {
+		this.mCurrentColor = mCurrentColor;
 
 		// Get the current hue from the current color and update the main color field
 		float[] hsv = new float[3];
-		Color.colorToHSV(color, hsv);
+		Color.colorToHSV(mCurrentColor, hsv);
 		mCurrentHue = hsv[0];
 		updateMainColors();
+	}
 
-		mCurrentColor = color;
+	private final int[] mHueBarColors = new int[258];
+	private int[] mMainColors = new int[65536];
+
+    public ColorPickerView(Context context) {
+        this(context, null, 0);
+    }
+
+    public ColorPickerView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public ColorPickerView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+
+        //TypedArray a = context.getTheme().obtainStyledAttributes(
+        //        attrs, R.styleable.ColorPickerView, defStyle, defStyle);
+
+        setCurrentColor(0);
 
 		// Initialize the colors of the hue slider bar
 		int index = 0;
@@ -76,8 +92,31 @@ public class ColorPickerView extends View {
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPaint.setTextAlign(Paint.Align.CENTER);
 		mPaint.setTextSize(12);
-	}
 
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int minSize = 100;
+        setMeasuredDimension(
+                Math.max(getSuggestedMinimumWidth(),
+                        resolveSize(minSize + getPaddingLeft() + getPaddingRight(),
+                                widthMeasureSpec)),
+                Math.max(getSuggestedMinimumHeight(),
+                        resolveSize(minSize + getPaddingTop() + getPaddingBottom(),
+                                heightMeasureSpec)));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    //     Methods and objects related to drawing
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 	// Get the current selected color from the hue bar
 	private int getCurrentMainColor()
 	{
@@ -161,7 +200,7 @@ public class ColorPickerView extends View {
 				mPaint.setColor(Color.BLACK);
 				mPaint.setStrokeWidth(3);
 			}
-			canvas.drawLine(x+10, 0, x+10, 40, mPaint);
+			canvas.drawLine(x+10, 5, x+10, 45, mPaint);
 		}
 
 		// Display the main field colors using LinearGradient
@@ -184,53 +223,28 @@ public class ColorPickerView extends View {
 			canvas.drawCircle(mCurrentX, mCurrentY, 10, mPaint);
 		}
 
-		// Draw a 'button' with the currently selected color
+		// Draw a block with the currently selected color
 		mPaint.setStyle(Paint.Style.FILL);
 		mPaint.setColor(mCurrentColor);
-		canvas.drawRect(10, 316, 138, 356, mPaint);
+		canvas.drawRect(10, 316, 266, 356, mPaint);
 
 		// Set the text color according to the brightness of the color
 		if (Color.red(mCurrentColor)+Color.green(mCurrentColor)+Color.blue(mCurrentColor) < 384)
 			mPaint.setColor(Color.WHITE);
 		else
 			mPaint.setColor(Color.BLACK);
-		canvas.drawText(getResources().getString(R.string.sample), 74, 340, mPaint);
-
-		// Draw a 'button' with the default color
-		mPaint.setStyle(Paint.Style.FILL);
-		mPaint.setColor(mDefaultColor);
-		canvas.drawRect(138, 316, 266, 356, mPaint);
-
-		// Set the text color according to the brightness of the color
-		if (Color.red(mDefaultColor)+Color.green(mDefaultColor)+Color.blue(mDefaultColor) < 384)
-			mPaint.setColor(Color.WHITE);
-		else
-			mPaint.setColor(Color.BLACK);
-		canvas.drawText(getResources().getString(R.string.paint), 202, 340, mPaint);
-	}
-
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		//			setMeasuredDimension(10, 20);
-		int minSize = 200;
-		setMeasuredDimension(
-				Math.max(getSuggestedMinimumWidth(),
-						resolveSize(minSize + getPaddingLeft() + getPaddingRight(),
-								widthMeasureSpec)),
-								Math.max(getSuggestedMinimumHeight(),
-										resolveSize(minSize + getPaddingTop() + getPaddingBottom(),
-												heightMeasureSpec)));
+		canvas.drawText(getResources().getString(R.string.sample), 133, 340, mPaint);
 
 	}
-
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getAction() != MotionEvent.ACTION_DOWN) return true;
+		//if (event.getAction() != MotionEvent.ACTION_DOWN) return true;
 		float x = event.getX();
 		float y = event.getY();
 
 		// If the touch event is located in the hue bar
-		if (x > 10 && x < 266 && y > 0 && y < 40)
+		if (x > 10 && x < 266 && y > 5 && y < 45)
 		{
 			// Update the main field colors
 			mCurrentHue = (255-x)*360/255;
@@ -264,14 +278,12 @@ public class ColorPickerView extends View {
 			}
 		}
 
-		// If the touch event is located in the left button, notify the listener with the current color
-		if (x > 10 && x < 138 && y > 316 && y < 356)
-			mListener.colorChanged("", mCurrentColor);
-
-		// If the touch event is located in the right button, notify the listener with the default color
-		if (x > 138 && x < 266 && y > 316 && y < 356)
-			mListener.colorChanged("", mDefaultColor);
-
 		return true;
 	}
+
+    public int getColor() {
+    	return mCurrentColor;
+    }
+
+
 }
