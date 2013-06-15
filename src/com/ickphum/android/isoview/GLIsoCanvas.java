@@ -31,7 +31,7 @@ public class GLIsoCanvas extends GLSurfaceView {
 		this.setRenderer(mRenderer = new GlRenderer());
 		this.setRenderMode(RENDERMODE_WHEN_DIRTY);
 		
-    	mScaleGestureDetector = new ScaleGestureDetector(context, mScaleGestureListener);
+		mScaleGestureDetector = new ScaleGestureDetector(context, mScaleGestureListener);
     	mGestureDetector = new GestureDetectorCompat(context, mGestureListener);
 
 	}

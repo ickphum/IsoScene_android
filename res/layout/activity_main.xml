@@ -375,23 +375,6 @@
         app:labelSeparation="10dp"
         app:labelTextColor="#d000"
         app:labelTextSize="14sp" />
-
-    <com.ickphum.android.isoview.IsoCanvas
-        android:id="@+id/isoCanvas1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.1"
-        android:padding="@dimen/chart_padding"
-        app:axisColor4="#df0f"
-        app:axisThickness4="2dp"
-        app:backgroundLineColor="#f00b"
-        app:dataColor4="#a6c"
-        app:dataThickness4="8dp"
-        app:gridColor4="#2000"
-        app:gridThickness4="1dp"
-        app:labelSeparation4="10dp"
-        app:labelTextColor4="#d000"
-        app:labelTextSize4="14sp" />
     
     <com.ickphum.android.isoview.GLIsoCanvas
         android:id="@+id/gLCanvas"
