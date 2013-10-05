@@ -68,7 +68,7 @@ public class GlRenderer implements Renderer {
 
 		//gl.glTranslatef(5.0f, 0.0f, -15.0f);
 		//triangle.draw(gl);
-		
+
 		/*
 		gl.glTranslatef(-20.0f, 20.0f, -50.0f);
 		for (int i = 0; i<100; i++) {

@@ -15,7 +15,7 @@
   -->
 
 <resources>
-    <string name="app_name">Interactive Chart Demo</string>
+    <string name="app_name">IsoScene</string>
     <string name="app_description">A sample application that allows you to navigate a simple line graph using touch gestures.</string>
     <string name="action_zoom_in">Demo zoom in</string>
     <string name="action_zoom_out">Demo zoom out</string>
@@ -64,6 +64,18 @@
     <string name="redo_to_branch">Redo To Branch</string>
     <string name="new_branch">New Branch</string>
     <string name="choose_branch">Choose Branch</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="clipboard">Clipboard</string>
+    <string name="undo_many">Undo Many</string>
+    <string name="redo_many">Redo Many</string>
+    <string-array name="relative_shades">
+        <item >Top,Left,Right</item>
+        <item >Top,Right,Left</item>
+        <item >Left,Top,Right</item>
+        <item >Left,Right,Top</item>
+        <item >Right,Left,Top</item>
+        <item >Right,Top,Left</item>
+        </string-array>
+    
 </resources>

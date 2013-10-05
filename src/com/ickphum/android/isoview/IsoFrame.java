@@ -36,10 +36,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 @SuppressLint("DefaultLocale")
-public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnColorChangedListener {
+public class IsoFrame extends ActionBarActivity implements ColorPickerDialog.OnColorChangedListener {
     //private InteractiveLineGraphView mGraphView;
 	
 	private boolean mMoveMode = false;
@@ -78,7 +78,8 @@ public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnCo
 				R.id.lightenButton,
 				R.id.darkenButton,
 				R.id.shadeButton,
-				R.id.shadeCubeButton
+				R.id.shadeCubeButton,
+				R.id.areaButton
 				));
 
 	}
@@ -169,6 +170,9 @@ public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnCo
 	// permanent reference to the cube
 	private IsoCube mCube;
 	private GLIsoCanvas glCanvas;
+	
+	// config object
+	private IsoConfig config;
  
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +190,13 @@ public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnCo
         buttonAction.put(R.id.sampleButton, Action.SAMPLE);
         buttonAction.put(R.id.selectButton, Action.SELECT);
         buttonAction.put(R.id.shadeCubeButton, Action.SHADE_CUBE);
+        
+        // create config object from file or default values
+        config = new IsoConfig(getBaseContext());
+        //Log.d("config loaded", config.getString("default_scene_file"));
+        //config.set("default_scene_file", "Start");
+		//config.save();
+
     }
 
     @Override
@@ -209,6 +220,9 @@ public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnCo
 		super.onPause();
 		glCanvas.onPause();
 		Log.d("onPause", "");
+		
+		// save config
+		config.save();
 	}
 
     @Override
@@ -228,14 +242,19 @@ public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnCo
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	Log.d("onOptionsItemSelected", item.toString());
+    	Integer i = item.getItemId();
+    	Log.d("onOptionsItemSelected", i.toString());
+    	i = R.id.config_options;
+    	Log.d("looking for", i.toString());
+		//ConfigDialog newFragment = new ConfigDialog();
+	    //newFragment.show(getSupportFragmentManager(), "ikmdialog");
         switch (item.getItemId()) {
-        
-        	/*
-            case R.id.action_pan_left:
-                mGraphView.panLeft();
-                return true;
-            */
+             	
+            case R.id.config_options:
+        		ConfigDialog newFragment = new ConfigDialog();
+        	    newFragment.show(getSupportFragmentManager(), "ikmdialog");
+           	
+                return true;     
 
         }
 
@@ -289,18 +308,29 @@ public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnCo
 		// the tool effect setting for that button.
 		for (int buttonId: buttonIds) {
 			ImageButton button = (ImageButton) findViewById(buttonId);
-			ToolEffect effect = buttonId == R.id.eraseButton
-				? eraseEffect
-				: buttonId == R.id.selectButton
-					? selectEffect
-					: null;
+			String bitmapName;
 			
-			String bitmapName = "action_" + ((String) button.getTag()).toLowerCase();
-			if (effect != null) {
-				bitmapName += "_" + effect.toString().toLowerCase();
+			// the area button isn't an action and must also check mAreaMode, so
+			// handle separately.
+			if (buttonId == R.id.areaButton) {
+				bitmapName = ((String) button.getTag()).toLowerCase() 
+						+ "_" + getSideChar()
+						+ "_" + (mAreaMode ? "on" : "off");
 			}
-			if (effect == null || effect != ToolEffect.ALL) {
-				bitmapName += "_" + getSideChar();
+			else {
+				ToolEffect effect = buttonId == R.id.eraseButton
+					? eraseEffect
+					: buttonId == R.id.selectButton
+						? selectEffect
+						: null;
+				
+				bitmapName = "action_" + ((String) button.getTag()).toLowerCase();
+				if (effect != null) {
+					bitmapName += "_" + effect.toString().toLowerCase();
+				}
+				if (effect == null || effect != ToolEffect.ALL) {
+					bitmapName += "_" + getSideChar();
+				}
 			}
 			
 			int bitmapId = getResources().getIdentifier(bitmapName, "drawable", "com.ickphum.android.isoscene");
@@ -361,8 +391,7 @@ public class IsoFrame extends FragmentActivity implements ColorPickerDialog.OnCo
 	
 	// called by a slow click on the cube
 	public void chooseColor() {
-		ColorPickerDialog newFragment = new ColorPickerDialog();
-		newFragment.setListener(this);
+		ColorPickerDialog newFragment = new ColorPickerDialog(this);
 	    newFragment.show(getSupportFragmentManager(), "ikmdialog");
 	}
 	

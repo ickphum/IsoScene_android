@@ -201,7 +201,8 @@
                     android:paddingLeft="@dimen/button_horizontal_padding"
                     android:paddingRight="@dimen/button_horizontal_padding"
                     android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/area_r_off" />
+                    android:src="@drawable/area_r_off"
+                    android:tag="@string/area" />
 
             </TableRow>
 
@@ -250,38 +251,12 @@
                     android:paddingTop="@dimen/button_vertical_padding"
                     android:src="@drawable/paste" />
 
-                <ImageButton
-                    android:id="@+id/clearAllSelectionsButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/clear_all_selections"
-                    android:onClick="showSelectionTools"
-                    android:paddingBottom="@dimen/button_vertical_padding"
-                    android:paddingLeft="@dimen/button_horizontal_padding"
-                    android:paddingRight="@dimen/button_horizontal_padding"
-                    android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/select_none" />
-
             </TableRow>
 
             <TableRow
                 android:id="@+id/tableRow8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-
-                <ImageButton
-                    android:id="@+id/selectAllButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/select_all"
-                    android:src="@drawable/select_all" />
-
-                <ImageButton
-                    android:id="@+id/selectVisibleButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/select_all_visible"
-                    android:src="@drawable/select_visible" />
 
             </TableRow>
 
@@ -315,42 +290,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
-                <ImageButton
-                    android:id="@+id/undoToBranchButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/undo_to_branch"
-                    android:src="@drawable/undo_to_branch" />
-
-                <ImageButton
-                    android:id="@+id/redoToBranchButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/redo_to_branch"
-                    android:src="@drawable/redo_to_branch" />
-
             </TableRow>
 
             <TableRow
                 android:id="@+id/tableRow11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-
-                <ImageButton
-                    android:id="@+id/newBranchButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/new_branch"
-                    android:src="@drawable/new_branch"
-                    android:visibility="visible" />
-
-                <ImageButton
-                    android:id="@+id/chooseBranchButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/choose_branch"
-                    android:src="@drawable/choose_branch"
-                    android:visibility="visible" />
 
             </TableRow>
 

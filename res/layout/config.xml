@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:tag="display"
+                    android:text="Display" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:tag="painting"
+                    android:text="Painting" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:tag="undo"
+                    android:text="Undo &amp; Branching" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:tag="saving"
+                    android:text="Saving" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:tag="defaults"
+                    android:text="Defaults" />
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical" >
+
+                    <CheckBox
+                        android:id="@+id/displayKey"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Display Key" />
+
+                    <CheckBox
+                        android:id="@+id/displayColor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Display Color" />
+
+                    <CheckBox
+                        android:id="@+id/displayPaletteIndex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Display Palette Index" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Script Step Delay (milliseconds)"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/scriptStepDelay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical" >
+
+                    <CheckBox
+                        android:id="@+id/repeatedPasting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Repeated Pasting" />
+
+                    <CheckBox
+                        android:id="@+id/repaintSameTile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Repaint Same Tile" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Shade Change"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/shadeChange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Darken/Lighten Change"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/darkenLightenChange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Relative Shades"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <Spinner
+                            android:id="@+id/spinner1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/relative_shades" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Undo Wait Delay (milliseconds)"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/undoWaitDelay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number" >
+
+                            <requestFocus />
+                        </EditText>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Undo Repeat Delay (milliseconds)"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/undoRepeatDelay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Undo Many Count"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/undoManyCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/automaticBranching"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Automatic Branching" />
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical" >
+
+                    <CheckBox
+                        android:id="@+id/autosaveOnExit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Autosave on exit" />
+
+                    <CheckBox
+                        android:id="@+id/useCompressedFiles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Use Compressed Files" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Autosave delay interval (seconds)"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/autosavePeriod"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number" >
+                        </EditText>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Autosave idle interval (seconds)"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/autosaveIdle"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="5"
+                            android:inputType="number" >
+                        </EditText>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Filename"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/defaultFilename"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView19"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scale"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/defaultScale"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Left RGB"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/defaultLeftRGB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView21"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Top RGB"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/defaultTopRGB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView22"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Right EGB"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/defaultRightRGB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Background RGB"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/defaultBackgroundRGB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="text" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/textView24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Background Line RGB"
+                            android:textAppearance="?android:attr/textAppearance" />
+
+                        <EditText
+                            android:id="@+id/defaultBackgroundLineRGB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="5"
+                            android:inputType="text" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" >
+
+        <Button
+            android:id="@+id/okButton"
+            style="android:buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            style="android:buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/cancel" />
+    </LinearLayout>
+
+</LinearLayout>

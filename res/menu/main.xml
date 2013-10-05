@@ -14,19 +14,107 @@
   limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/recent_files" android:titleCondensed="@string/recent" android:title="@string/recent_files" android:showAsAction="never">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:isoview="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/config_options"
+        android:title="@string/config_options"
+        android:icon="@drawable/config"
+        isoview:showAsAction="always">
+    </item>
+    <item 
+        android:id="@+id/clipboard" 
+        android:title="@string/clipboard"
+        android:icon="@drawable/clipboard"
+        isoview:showAsAction="always">
         <menu>
-            <item android:id="@+id/test1" android:title=""/>
+            <item 
+                android:id="@+id/select_all" 
+                android:title="@string/select_all" 
+                android:icon="@drawable/select_all"/>
+            <item 
+                android:id="@+id/select_all_visible" 
+                android:title="@string/select_all_visible" 
+                android:icon="@drawable/select_visible"/>
+            <item 
+                android:id="@+id/clear_all_selections" 
+                android:title="@string/clear_all_selections" 
+                android:icon="@drawable/select_none"/>
         </menu>
     </item>
-    <item android:id="@+id/new_scene" android:titleCondensed="@string/neww" android:title="@string/new_scene"></item>
-    <item android:id="@+id/open_scene" android:titleCondensed="@string/open" android:title="@string/open_scene"></item>
-    <item android:id="@+id/save_as" android:title="@string/save_as"></item>
-    <item android:id="@+id/export_scene" android:titleCondensed="@string/export" android:title="@string/export_to_image_file"></item>
-    <item android:id="@+id/import_image" android:titleCondensed="@string/importt" android:title="@string/import_image_file"></item>
-    <item android:id="@+id/scene_options" android:title="@string/scene_options"></item>
-    <item android:id="@+id/config_options" android:title="@string/config_options"></item>
-    <item android:id="@+id/save" android:title="@string/save"></item>
+    <item 
+        android:id="@+id/undo" 
+        android:title="@string/undo"
+        android:icon="@drawable/undo_redo"
+        isoview:showAsAction="always">
+        <menu>
+            <item 
+                android:id="@+id/undo_many" 
+                android:title="@string/undo_many" 
+                android:icon="@drawable/undo_many"/>
+            <item 
+                android:id="@+id/redo_many" 
+                android:title="@string/redo_many" 
+                android:icon="@drawable/redo_many"/>
+            <item 
+                android:id="@+id/undo_to_branch" 
+                android:title="@string/undo_to_branch" 
+                android:icon="@drawable/undo_to_branch"/>
+            <item 
+                android:id="@+id/redo_to_branch" 
+                android:title="@string/redo_to_branch" 
+                android:icon="@drawable/redo_to_branch"/>
+            <item 
+                android:id="@+id/new_branch" 
+                android:title="@string/new_branch" 
+                android:icon="@drawable/new_branch"/>
+            <item 
+                android:id="@+id/choose_branch" 
+                android:title="@string/choose_branch" 
+                android:icon="@drawable/choose_branch"/>
+            </menu>
+    </item>
+    <item android:id="@+id/recent_files" 
+        android:titleCondensed="@string/recent" 
+        android:title="@string/recent_files" >
+        <menu>
+            <item
+                android:id="@+id/test1" 
+                android:title="@string/ok"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/new_scene"
+        android:title="@string/new_scene"
+        android:titleCondensed="@string/neww">
+    </item>
+    <item
+        android:id="@+id/open_scene"
+        android:title="@string/open_scene"
+        android:titleCondensed="@string/open">
+    </item>
+    <item
+        android:id="@+id/save_as"
+        android:title="@string/save_as">
+    </item>
+    <item
+        android:id="@+id/export_scene"
+        android:title="@string/export_to_image_file"
+        android:titleCondensed="@string/export">
+    </item>
+    <item
+        android:id="@+id/import_image"
+        android:title="@string/import_image_file"
+        android:titleCondensed="@string/importt">
+    </item>
+    <item
+        android:id="@+id/scene_options"
+        android:title="@string/scene_options">
+    </item>
+    <item
+        android:id="@+id/save"
+        android:title="@string/save">
+    </item>
+    
     
 </menu>

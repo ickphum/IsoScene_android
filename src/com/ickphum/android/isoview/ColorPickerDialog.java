@@ -20,17 +20,14 @@ public class ColorPickerDialog extends DialogFragment {
     private int mCurrentColor;
     private ColorPickerView mPicker;
 
-    public ColorPickerDialog() {
-    }
-    
-    public void setListener(OnColorChangedListener l) {
+    public ColorPickerDialog(OnColorChangedListener l) {
     	mListener = l;
     	Log.d("setListener", "listener " + mListener);
     	
     	// get the current color from the IsoFrame, which is our listener
     	mCurrentColor = ((IsoFrame)mListener).getCurrentColor();
     }
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -40,7 +37,7 @@ public class ColorPickerDialog extends DialogFragment {
 	    // this setStyle is VERY important.
 	    // STYLE_NO_FRAME means that I will provide my own layout and style for the whole dialog
 	    // so for example the size of the default dialog will not get in my way
-	    // the style extends the default one. see bellow.        
+	    // the style extends the default one. see below.        
     }
     
     @Override

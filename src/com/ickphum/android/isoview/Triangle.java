@@ -64,7 +64,7 @@ public class Triangle {
 			(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
 	};
 
-	int n = 200000;
+	int n = 2000;
 	
 	public Triangle() {
 		/*
