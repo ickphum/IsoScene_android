@@ -77,5 +77,33 @@
         <item >Right,Left,Top</item>
         <item >Right,Top,Left</item>
         </string-array>
+        
+	<string name="previousSceneFiles">previousSceneFiles</string>
+    <string name="autosave_on_exit_setting">autosave_on_exit</string>
+    <string name="autosave_period_seconds_setting">autosave_period_seconds</string>
+    <string name="autosave_idle_seconds_setting">autosave_idle_seconds</string>
+    <string name="use_compressed_files_setting">use_compressed_files</string>
+    <string name="script_delay_milliseconds_setting">script_delay_milliseconds</string>
+    <string name="undo_wait_milliseconds_setting">undo_wait_milliseconds</string>
+    <string name="undo_repeat_milliseconds_setting">undo_repeat_milliseconds</string>
+    <string name="undo_many_count_setting">undo_many_count</string>
+    <string name="repeated_pasting_setting">repeated_pasting</string>
+    <string name="repaint_same_tile_setting">repaint_same_tile</string>
+    <string name="automatic_branching_setting">automatic_branching</string>
+    <string name="shade_change_setting">shade_change</string>
+    <string name="darken_lighten_change_setting">darken_lighten_change</string>
+    <string name="relative_shades_setting">relative_shades</string>
+    <string name="display_palette_index_setting">display_palette_index</string>
+    <string name="display_color_setting">display_color</string>
+    <string name="display_key_setting">display_key</string>
+    <string name="default_scene_file_setting">default_scene_file</string>
+    <string name="default_scene_scale_setting">default_scene_scale</string>
+    <string name="default_scene_left_rgb_setting">default_scene_left_rgb</string>
+    <string name="default_scene_top_rgb_setting">default_scene_top_rgb</string>
+    <string name="default_scene_right_rgb_setting">default_scene_right_rgb</string>
+    <string name="default_scene_background_rgb_setting">default_scene_background_rgb</string>
+    <string name="default_scene_bg_line_rgb_setting">default_scene_bg_line_rgb</string>
+    <string name="default_scene_tile_line_rgb_setting">default_scene_tile_line_rgb</string>
+	
     
 </resources>

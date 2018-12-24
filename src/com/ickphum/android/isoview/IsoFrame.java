@@ -18,10 +18,12 @@ package com.ickphum.android.isoview;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import com.ickphum.android.isoscene.R;
+import com.ickphum.android.isoview.IsoFrame.TileShape;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -50,15 +52,134 @@ public class IsoFrame extends ActionBarActivity implements ColorPickerDialog.OnC
 	}
 
 	public enum CubeSide {
-	    LEFT, TOP, RIGHT;
-	    public int getIndex() {
+	    LEFT(0), TOP(1), RIGHT(2);
+	    private int mValue;
+	    CubeSide(int value) {
+	    	mValue = value;
+	    }
+	    public int getInt() {
+	    	return mValue;
+	    }
+
+	    // we want to differentiate the two domains (the cube only has 3 sides, but sometimes we paint triangles as well)
+	    // but also make it easy to get the current shape from the cube 
+		public TileShape getShape() {
 	    	return this == LEFT
-	    		? 0
+	    		? TileShape.LEFT
 	    		: this == TOP
-	    			? 1
-	    			: 2;
+	    			? TileShape.TOP
+	    			: TileShape.RIGHT;
+		}
+	}
+
+	public enum TileShape {
+	    LEFT(0), TOP(1), RIGHT(2), TRIANGLE_LEFT(3), TRIANGLE_RIGHT(4);
+	    private int mValue;
+	    TileShape(int value) {
+	    	mValue = value;
+	    }
+	    public int getInt() {
+	    	return mValue;
+	    }
+	    public static TileShape fromInt(int i) {
+	    	for (TileShape t : TileShape.values()) {
+	    		if (t.getInt() == i) {
+	    			return t;
+	    		}
+	    	}
+	    	return null;
 	    }
 	}
+
+	public static final HashMap<TileShape, CubeSide> shapeFacing = new HashMap<TileShape, CubeSide>();
+	static {
+		shapeFacing.put(TileShape.LEFT, CubeSide.RIGHT);
+		shapeFacing.put(TileShape.TOP, CubeSide.LEFT);
+		shapeFacing.put(TileShape.RIGHT, CubeSide.RIGHT);
+		shapeFacing.put(TileShape.TRIANGLE_LEFT, CubeSide.LEFT);
+		shapeFacing.put(TileShape.TRIANGLE_RIGHT, CubeSide.RIGHT);
+	}
+	
+	public static final int[][][] shapeClashTriangles = {
+		{
+			{ -1, 0, -1, TileShape.TRIANGLE_LEFT.getInt(), 1 },
+			{  0, 0,  0, TileShape.TRIANGLE_RIGHT.getInt(), 2 },
+		},
+		{
+			{  0, 1,  1, TileShape.TRIANGLE_RIGHT.getInt(), 1 },
+			{  0, 0,  0, TileShape.TRIANGLE_LEFT.getInt(), 2 },
+		},
+		{
+			{  0, 0,  0, TileShape.TRIANGLE_RIGHT.getInt(), 1 },
+			{  0, 0,  0, TileShape.TRIANGLE_LEFT.getInt(), 2 },
+		},
+
+        // shift_flag set to 3 so any clash sTOP.getInt()s the paint; can't
+        // paint half a triangle.
+		{
+			{  0, 0,  0, TileShape.TRIANGLE_RIGHT.getInt(), 3 },
+		},
+		{
+			{  0, 0,  0, TileShape.TRIANGLE_LEFT.getInt(), 3 },
+		},
+	};
+	
+	public static final int[][][][] shapeClashOffsets = {
+	    {
+            {
+                {  0,  0, 0, TileShape.RIGHT.getInt(), },
+                {  0, -1,-1, TileShape.TOP.getInt(), },
+                {  0,  0, 0, TileShape.TRIANGLE_RIGHT.getInt(), },
+            },
+            {
+                { -1, 0,-1, TileShape.RIGHT.getInt(), },
+                { -1, 0,-1, TileShape.TOP.getInt(), },
+                { -1, 0,-1, TileShape.TRIANGLE_LEFT.getInt(), },
+            },
+	    },
+	    {
+            {
+                {  0, 0, 0, TileShape.RIGHT.getInt(), },
+                {  1, 0, 1, TileShape.LEFT.getInt(), },
+                {  0, 0, 0, TileShape.TRIANGLE_LEFT.getInt(), },
+            },
+            {
+                { 0, 1, 1, TileShape.RIGHT.getInt(), },
+                { 0, 1, 1, TileShape.LEFT.getInt(), },
+                { 0, 1, 1, TileShape.TRIANGLE_RIGHT.getInt(), },
+            },
+	    },
+	    {
+            {
+                {  1, 0, 1, TileShape.LEFT.getInt(), },
+                {  0, 0, 0, TileShape.TOP.getInt(), },
+                {  0, 0, 0, TileShape.TRIANGLE_LEFT.getInt(), },
+            },
+            {
+                {  0, 0, 0, TileShape.LEFT.getInt(), },
+                {  0,-1,-1, TileShape.TOP.getInt(), },
+                {  0, 0, 0, TileShape.TRIANGLE_RIGHT.getInt(), },
+            },
+	    },
+	    {
+            {
+                {  1, 0, 1, TileShape.LEFT.getInt(), },
+                {  0, 0, 0, TileShape.TOP.getInt(), },
+                {  0, 0, 0, TileShape.RIGHT.getInt(), },
+                {  0, 0, 0, TileShape.TRIANGLE_LEFT.getInt(), },
+            },
+	    },
+	    {
+            {
+                {  0, 0, 0, TileShape.LEFT.getInt(), },
+                {  0, 0, 0, TileShape.RIGHT.getInt(), },
+                {  0,-1,-1, TileShape.TOP.getInt(), },
+                {  0, 0, 0, TileShape.TRIANGLE_RIGHT.getInt(), },
+            },
+	    },
+	};
+
+
 	private CubeSide mCubeSide = CubeSide.RIGHT;
 	private List<CubeSide> othersFromLeft = Arrays.asList(CubeSide.TOP, CubeSide.RIGHT);
 	private List<CubeSide> othersFromTop = Arrays.asList(CubeSide.LEFT, CubeSide.RIGHT);
@@ -176,14 +297,18 @@ public class IsoFrame extends ActionBarActivity implements ColorPickerDialog.OnC
  
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // create config object from file or default values
+        config = new IsoConfig(getBaseContext());
+        
         setContentView(R.layout.activity_main);
-       // mGraphView = (InteractiveLineGraphView) findViewById(R.id.chart);
         
         registerForContextMenu(findViewById(R.id.eraseButton));
         registerForContextMenu(findViewById(R.id.selectButton));
         
         mCube = (IsoCube)findViewById(R.id.cube);
         glCanvas = (GLIsoCanvas)findViewById(R.id.gLCanvas);
+        glCanvas.setFrame(this);
         
         buttonAction.put(R.id.paintButton, Action.PAINT);
         buttonAction.put(R.id.eraseButton, Action.ERASE);
@@ -191,38 +316,48 @@ public class IsoFrame extends ActionBarActivity implements ColorPickerDialog.OnC
         buttonAction.put(R.id.selectButton, Action.SELECT);
         buttonAction.put(R.id.shadeCubeButton, Action.SHADE_CUBE);
         
-        // create config object from file or default values
-        config = new IsoConfig(getBaseContext());
         //Log.d("config loaded", config.getString("default_scene_file"));
         //config.set("default_scene_file", "Start");
 		//config.save();
 
     }
+	
+	public IsoConfig getConfig() {
+		return this.config;
+	}
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { // create the overflow menu from main.xml
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
-    /** Remember to resume the glSurface  */
+    @Override
+	protected void onStart() {
+		Log.d("IsoFrame", "onStart");
+		super.onStart();
+    }
+    
 	@Override
-	protected void onResume() {
+	protected void onResume() { // load config and resume child controls inc glCanvas
+		Log.d("IsoFrame", "onResume");
+		
+        // create config object from file or default values
+        config = new IsoConfig(getBaseContext());
+        
 		super.onResume();
 		glCanvas.onResume();
-		Log.d("onResume", "");
 	}
 
-	/** Also pause the glSurface  */
 	@Override
-	protected void onPause() {
-		super.onPause();
-		glCanvas.onPause();
-		Log.d("onPause", "");
+	protected void onPause() { // save config and pause child controls inc glCanvas
+		Log.d("IsoFrame", "onPause");
 		
 		// save config
 		config.save();
+		super.onPause();
+		glCanvas.onPause();
 	}
 
     @Override
@@ -242,30 +377,63 @@ public class IsoFrame extends ActionBarActivity implements ColorPickerDialog.OnC
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	Integer i = item.getItemId();
-    	Log.d("onOptionsItemSelected", i.toString());
-    	i = R.id.config_options;
-    	Log.d("looking for", i.toString());
-		//ConfigDialog newFragment = new ConfigDialog();
-	    //newFragment.show(getSupportFragmentManager(), "ikmdialog");
+
         switch (item.getItemId()) {
              	
             case R.id.config_options:
         		ConfigDialog newFragment = new ConfigDialog();
         	    newFragment.show(getSupportFragmentManager(), "ikmdialog");
-           	
                 return true;     
+            case R.id.select_all:
+            	Log.d("onOptionsItemSelected", "select_all");
+            	return true;
+            case R.id.select_all_visible:
+            	Log.d("onOptionsItemSelected", "select_all_visible");
+            	return true;
+            case R.id.clear_all_selections:
+            	Log.d("onOptionsItemSelected", "clear_all_selections");
+            	return true;
+            case R.id.undo_many:
+            	Log.d("onOptionsItemSelected", "undo_many");
+            	return true;
+            case R.id.redo_many:
+            	Log.d("onOptionsItemSelected", "redo_many");
+            	return true;
+            case R.id.undo_to_branch:
+            	Log.d("onOptionsItemSelected", "undo_to_branch");
+            	return true;
+            case R.id.redo_to_branch:
+            	Log.d("onOptionsItemSelected", "redo_to_branch");
+            	return true;
+            case R.id.new_branch:
+            	Log.d("onOptionsItemSelected", "new_branch");
+            	return true;
+            case R.id.choose_branch:
+            	Log.d("onOptionsItemSelected", "choose_branch");
+            	return true;
+            case R.id.new_scene:
+            	Log.d("onOptionsItemSelected", "new_scene");
+            	return true;
+            case R.id.open_scene:
+            	Log.d("onOptionsItemSelected", "open_scene");
+            	return true;
+            case R.id.save_as:
+            	Log.d("onOptionsItemSelected", "save_as");
+            	return true;
+            case R.id.export_scene:
+            	Log.d("onOptionsItemSelected", "export_scene");
+            	return true;
+            case R.id.import_image:
+            	Log.d("onOptionsItemSelected", "import_image");
+            	return true;
+            case R.id.save:
+            	Log.d("onOptionsItemSelected", "save");
+            	return true;
 
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-	public void showSelectionTools (View view) {
-		// currently called by clearSelection button; the below statement
-		// does nothing afaik.
-		((Activity) view.getContext()).openContextMenu(view);
-	}
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -372,6 +540,14 @@ public class IsoFrame extends ActionBarActivity implements ColorPickerDialog.OnC
 		mMoveMode = ! mMoveMode;
 		moveButton.setImageResource(mMoveMode ? R.drawable.move_on : R.drawable.move_off);
 	}
+	
+	public boolean panning () {
+		return mMoveMode;
+	}
+	
+	public boolean getAreaMode() {
+		return mAreaMode;
+	}
 
 	public void toggleAreaFlag (View view) {
 		ImageButton areaButton = (ImageButton) view.findViewById(R.id.areaButton);
@@ -391,7 +567,7 @@ public class IsoFrame extends ActionBarActivity implements ColorPickerDialog.OnC
 	
 	// called by a slow click on the cube
 	public void chooseColor() {
-		ColorPickerDialog newFragment = new ColorPickerDialog(this);
+		ColorPickerDialog newFragment = new ColorPickerDialog();
 	    newFragment.show(getSupportFragmentManager(), "ikmdialog");
 	}
 	
@@ -457,10 +633,10 @@ public class IsoFrame extends ActionBarActivity implements ColorPickerDialog.OnC
 		int change = 20;
 	    CubeSide currentSide = getCubeSide();
 	    int[] relativeShade = {1,0,2};
-	    int currentIndex = currentSide.getIndex();
+	    int currentIndex = currentSide.getInt();
 	    List<Integer> shades = new ArrayList<Integer>();
 	    for(CubeSide otherSide: getOtherSides()) {
-	    	int otherIndex = otherSide.getIndex();
+	    	int otherIndex = otherSide.getInt();
 	    	shades.add(shadeColor(color, change * (relativeShade[currentIndex] - relativeShade[otherIndex])));
 	    }
 		return shades;

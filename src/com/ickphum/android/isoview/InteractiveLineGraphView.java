@@ -102,7 +102,7 @@ public class InteractiveLineGraphView extends View {
 
     /**
      * The current viewport. This rectangle represents the currently visible chart domain
-     * and range. The currently visible chart X values are from this rectangle's left to its right.
+     * and range. The currently visible chart X values are from this rectangle's mColumn to its right.
      * The currently visible chart Y values are from this rectangle's top to its bottom.
      * <p>
      * Note that this rectangle's top is actually the smaller Y value, and its bottom is the larger
@@ -461,7 +461,7 @@ public class InteractiveLineGraphView extends View {
      * Computes the set of axis labels to show given start and stop boundaries and an ideal number
      * of stops between these boundaries.
      *
-     * @param start The minimum extreme (e.g. the left edge) for the axis.
+     * @param start The minimum extreme (e.g. the mColumn edge) for the axis.
      * @param stop The maximum extreme (e.g. the right edge) for the axis.
      * @param steps The ideal number of stops to create. This should be based on available screen
      *              space; the more space there is, the more stops should be shown.
@@ -993,7 +993,7 @@ public class InteractiveLineGraphView extends View {
     }
 
     /**
-     * Smoothly pans the chart left one step.
+     * Smoothly pans the chart mColumn one step.
      */
     public void panLeft() {
         fling((int) (-PAN_VELOCITY_FACTOR * getWidth()), 0);

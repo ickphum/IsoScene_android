@@ -1,144 +1,77 @@
 package com.ickphum.android.isoview;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.CharBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.opengl.GLES10;
-import android.util.Log;
+import com.ickphum.android.isoscene.R;
 
 public class Triangle {
-
-	private FloatBuffer vertexBuffer;   // buffer holding the vertices
-	private ByteBuffer colorBuffer;
-
-	/*
-	private float vertices[] = {
-			-0.86f, 0.5f,  0.0f,
-			0.0f,  0.0f,  0.0f,
-			-0.86f, 1.5f,  0.0f,
-
-			0.0f,  0.0f,  0.0f,
-			-0.86f, 1.5f,  0.0f,
-			0.0f,  1.0f,  0.0f,
-			
-			0.0f,  1.0f,  0.0f,
-			0.86f, 1.5f,  0.0f,
-			0.0f,  0.0f,  0.0f,
-
-			0.86f, 1.5f,  0.0f,
-			0.0f,  0.0f,  0.0f,
-			0.86f, 0.5f,  0.0f,
-	};
-
-	private byte colors[] = {
-			(byte)0xff, 0x00, 0x00, (byte) 0xff,
-			(byte)0xff, 0x00, 0x00, (byte) 0xff,
-			(byte)0xff, 0x00, 0x00, (byte) 0xff,
-			
-			(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
-			(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
-			(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
-
-			0x00, (byte)0xff, (byte)0xff, (byte) 0xff,
-			0x00, (byte)0xff, (byte)0xff, (byte) 0xff,
-			0x00, (byte)0xff, (byte)0xff, (byte) 0xff,
-			
-			0x00, 0x00, (byte)0xff, (byte) 0xff,
-			0x00, 0x00, (byte)0xff, (byte) 0xff,
-			0x00, 0x00, (byte)0xff, (byte) 0xff,
-	};
-	*/
-
-	private byte colors[] = {
-			(byte)0xff, 0x00, 0x00, (byte) 0xff,
-			(byte)0xff, 0x00, 0x00, (byte) 0xff,
-			(byte)0xff, 0x00, 0x00, (byte) 0xff,
-			(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
-			(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
-			(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
-	};
-
-	int n = 2000;
 	
-	public Triangle() {
-		/*
-		// a float has 4 bytes so we allocate for each coordinate 4 bytes
-		ByteBuffer vertexByteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
-		vertexByteBuffer.order(ByteOrder.nativeOrder());
-		
-		// allocates the memory from the byte buffer
-		vertexBuffer = vertexByteBuffer.asFloatBuffer();
+	private RenderGroup rg;
 
-		// fill the vertexBuffer with the vertices
-		vertexBuffer.put(vertices);
+	int n = 10;
+	
+	public Triangle(GlRenderer renderer) {
+		
+		int textureID = -1;
+		textureID = renderer.getTextureId(R.drawable.select_texture);
+		List<Integer> singleColor = null;
+		//singleColor = Arrays.asList(0xff, 0, 0, 0x7f);
+		this.rg = new RenderGroup("Triangle", GL10.GL_TRIANGLES, textureID, singleColor);
 
-		// set the cursor position to the beginning of the buffer
-		vertexBuffer.position(0);
-		
-		Log.d("Triangle", "color length " + colors.length);
+		byte colors[] = {
+				(byte)0xff, 0x00, 0x00, (byte) 0x7f,
+				(byte)0xff, 0x00, 0x00, (byte) 0x7f,
+				(byte)0xff, 0x00, 0x00, (byte) 0x7f,
+				(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
+				(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
+				(byte)0xff, (byte)0xff, 0x00, (byte) 0xff,
+		};
 
-		colorBuffer = ByteBuffer.allocateDirect(colors.length);
-		colorBuffer.put(colors);
-		colorBuffer.position(0);
-		*/
 		
-		ByteBuffer vertexByteBuffer = ByteBuffer.allocateDirect(n * 6 * 3 * 4);
-		vertexByteBuffer.order(ByteOrder.nativeOrder());
-		vertexBuffer = vertexByteBuffer.asFloatBuffer();
-		
-		colorBuffer = ByteBuffer.allocateDirect(n * 6 * 4);
-		
+		float size = 50f;
 		for (int i = 0; i < n; i++) {
-			float x_offset = (float)Math.random() * 85f;
-			float y_offset = (float)Math.random() * 62f;
+			float x_offset = (float)Math.random() * 800f;
+			float y_offset = (float)Math.random() * 400f;
 			float new_vertices[] = {
-					-0.86f + x_offset, 0.5f + y_offset,  0.0f,
-					0.0f + x_offset,  0.0f + y_offset,  0.0f,
-					-0.86f + x_offset, 1.5f + y_offset,  0.0f,
-					0.0f + x_offset,  0.0f + y_offset,  0.0f,
-					-0.86f + x_offset, 1.5f + y_offset,  0.0f,
-					0.0f + x_offset,  1.0f + y_offset,  0.0f,
+					size * -0.86f + x_offset, size * 0.5f + y_offset,
+					size * 0.0f + x_offset,   size * 0.0f + y_offset,
+					size * -0.86f + x_offset, size * 1.5f + y_offset,
+					
+					size * 0.0f + x_offset,   size * 0.0f + y_offset,
+					size * -0.86f + x_offset, size * 1.5f + y_offset,
+					size * 0.0f + x_offset,   size * 1.0f + y_offset,
+			};
+			float new_texture_coords[] = {
+					1, 1,
+					0, 1,
+					1, 0,
+					
+					0, 1,
+					1, 0,
+					0, 0
 			};
 
-			vertexBuffer.put(new_vertices);
-			colorBuffer.put(colors);
+			rg.addVertices(new_vertices);
+			if (textureID >= 0)
+				rg.addTextureCoords(new_texture_coords);
+			else
+				if (singleColor == null)
+					rg.addColors(colors);
+			
 			
 		}
-
-		vertexBuffer.position(0);
-		colorBuffer.position(0);
 		
-	}
+		rg.finishBuffers();
 
+	}
+	
 	public void draw(GL10 gl) {
-		Log.d("draw", "test");
-		
-		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
+		//Log.d("draw", "test");
 
-		// set the colour for the triangle
-		//gl.glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
-
-		// Point to our vertex buffer
-		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
-		gl.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, colorBuffer);
-
-		// Draw the vertices as triangle strip
-		gl.glDrawArrays(GL10.GL_TRIANGLES, 0, n * 6);
-
-		//Disable the client state before leaving
-		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-		gl.glDisableClientState(GL10.GL_COLOR_ARRAY);
-	}
-
-	public void draw(GLES10 gl) {
-		// TODO Auto-generated method stub
+		rg.draw(gl);
 		
 	}
 }

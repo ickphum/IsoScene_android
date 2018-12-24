@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,43 +50,64 @@ public class IsoConfig {
 			}
 		}
 		else {
-			Log.d("IsoConfig", "init default config");
+			Log.d("IsoConfig", "create empty config");
 			
 			json = new JSONObject();
-			
-		    try {
-				json.put("previousSceneFiles", new JSONArray());
-	    
-			    json.put("autosave_on_exit", true);
-			    json.put("autosave_period_seconds", 60);
-			    json.put("autosave_idle_seconds", 2);
-			    json.put("use_compressed_files", true);
-			    json.put("script_delay_milliseconds", 50);
-			    json.put("undo_wait_milliseconds", 200);
-			    json.put("undo_repeat_milliseconds", 20);
-			    json.put("undo_many_count", 100);
-			    json.put("repeated_pasting", true);
-			    json.put("repaint_same_tile", false);
-			    json.put("automatic_branching", false);
-			    json.put("shade_change", 30);
-			    json.put("darken_lighten_change", 30);
-			    json.put("relative_shades", "L;1;T;0;R;2");
-			    json.put("display_palette_index", false);
-			    json.put("display_color", false);
-			    json.put("display_key", false);
-			    json.put("default_scene_file", "Start");
-			    json.put("default_scene_scale", 0.5);
-			    json.put("default_scene_left_rgb", "#ca9c5b");
-			    json.put("default_scene_top_rgb", "#e8ba79");
-			    json.put("default_scene_right_rgb", "#ac7e3d");
-			    json.put("default_scene_background_rgb", "#AAAAAA");
-			    json.put("default_scene_bg_line_rgb", "#B3B3B3");
-			    json.put("default_scene_tile_line_rgb", "#DDDDDD");
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
 		}
+		
+		// create am object with all the default settings, then copy those that are missing
+		// to the config object, so we can add default settings and they'll automatically be added
+		// to existing configs.
+		JSONObject defaultSettings = new JSONObject();
+	    try {
+			defaultSettings.put("previousSceneFiles", new JSONArray());
+    
+		    defaultSettings.put("autosave_on_exit", true);
+		    defaultSettings.put("autosave_period_seconds", 60);
+		    defaultSettings.put("autosave_idle_seconds", 2);
+		    defaultSettings.put("use_compressed_files", true);
+		    defaultSettings.put("script_delay_milliseconds", 50);
+		    defaultSettings.put("undo_wait_milliseconds", 200);
+		    defaultSettings.put("undo_repeat_milliseconds", 20);
+		    defaultSettings.put("undo_many_count", 100);
+		    defaultSettings.put("repeated_pasting", true);
+		    defaultSettings.put("repaint_same_tile", false);
+		    defaultSettings.put("automatic_branching", false);
+		    defaultSettings.put("shade_change", 30);
+		    defaultSettings.put("darken_lighten_change", 30);
+		    defaultSettings.put("relative_shades", 0);
+		    defaultSettings.put("display_palette_index", false);
+		    defaultSettings.put("display_color", false);
+		    defaultSettings.put("display_key", false);
+		    defaultSettings.put("default_scene_file", "Start");
+		    defaultSettings.put("default_scene_scale", 0.5);
+		    defaultSettings.put("default_scene_left_rgb", "#ca9c5b");
+		    defaultSettings.put("default_scene_top_rgb", "#e8ba79");
+		    defaultSettings.put("default_scene_right_rgb", "#ac7e3d");
+		    defaultSettings.put("default_scene_background_rgb", "#AAAAAA");
+		    defaultSettings.put("default_scene_bg_line_rgb", "#B3B3B3");
+		    defaultSettings.put("default_scene_tile_line_rgb", "#DDDDDD");
+		    defaultSettings.put("repaint_same_tile", false);
+		    defaultSettings.put("sector_size", 20);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		// add any missing items to our config
+	    @SuppressWarnings("rawtypes")
+		Iterator keys = defaultSettings.keys();
+	    while(keys.hasNext()) {
+	        String key = (String) keys.next();
+	        if (! json.has(key)) {
+	        	Log.d("isoConfig", "add new default key " + key);
+	        	try {
+		        	json.put(key, defaultSettings.get(key));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+	        }
+	    }
+	    
 	}
 	
 	public void save () {

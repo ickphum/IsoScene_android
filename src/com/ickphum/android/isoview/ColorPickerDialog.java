@@ -16,16 +16,11 @@ public class ColorPickerDialog extends DialogFragment {
         void colorChanged(String key, int color);
     }
     
-    private OnColorChangedListener mListener;
+    private IsoFrame mListener;
     private int mCurrentColor;
     private ColorPickerView mPicker;
 
-    public ColorPickerDialog(OnColorChangedListener l) {
-    	mListener = l;
-    	Log.d("setListener", "listener " + mListener);
-    	
-    	// get the current color from the IsoFrame, which is our listener
-    	mCurrentColor = ((IsoFrame)mListener).getCurrentColor();
+    public ColorPickerDialog() {
     }
     
     @Override
@@ -69,6 +64,16 @@ public class ColorPickerDialog extends DialogFragment {
         });
 	    
 	    return view;
+    }
+
+    @Override
+    public void onResume() {
+    	mListener = (IsoFrame) getActivity();
+    	Log.d("setListener", "listener " + mListener);
+    	
+    	// get the current color from the IsoFrame, which is our listener
+    	mCurrentColor = mListener.getCurrentColor();
+    	super.onResume();
     }
     
 }

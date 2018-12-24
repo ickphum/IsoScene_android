@@ -375,13 +375,13 @@ public class IsoCube extends View {
 	public void newColor(CubeSide cubeSide, int color) {
 		
 		// set the new color for the appropriate side and redraw
-		mPaints[cubeSide.getIndex()].setColor(color);
+		mPaints[cubeSide.getInt()].setColor(color);
 		invalidate();
 	}
 
 	public int getColor(CubeSide cubeSide) {
 		// TODO Auto-generated method stub
-		return mPaints[cubeSide.getIndex()].getColor();
+		return mPaints[cubeSide.getInt()].getColor();
 	}
 
 }

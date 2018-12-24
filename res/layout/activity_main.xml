@@ -114,6 +114,39 @@
                 android:layout_height="wrap_content" >
 
                 <ImageButton
+                    android:id="@+id/shadeCubeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/shade_cube"
+                    android:onClick="changeAction"
+                    android:paddingBottom="@dimen/button_vertical_padding"
+                    android:paddingLeft="@dimen/button_horizontal_padding"
+                    android:paddingRight="@dimen/button_horizontal_padding"
+                    android:paddingTop="@dimen/button_vertical_padding"
+                    android:src="@drawable/action_shade_cube_r"
+                    android:tag="@string/shade_cube" />
+
+                <ImageButton
+                    android:id="@+id/shadeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/shade"
+                    android:onClick="shadesFromCurrentColor"
+                    android:paddingBottom="@dimen/button_vertical_padding"
+                    android:paddingLeft="@dimen/button_horizontal_padding"
+                    android:paddingRight="@dimen/button_horizontal_padding"
+                    android:paddingTop="@dimen/button_vertical_padding"
+                    android:src="@drawable/action_shade_r"
+                    android:tag="@string/shade" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageButton
                     android:id="@+id/lightenButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -138,39 +171,6 @@
                     android:paddingTop="@dimen/button_vertical_padding"
                     android:src="@drawable/action_darken_r"
                     android:tag="@string/darken" />
-
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <ImageButton
-                    android:id="@+id/shadeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/shade"
-                    android:onClick="shadesFromCurrentColor"
-                    android:paddingBottom="@dimen/button_vertical_padding"
-                    android:paddingLeft="@dimen/button_horizontal_padding"
-                    android:paddingRight="@dimen/button_horizontal_padding"
-                    android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_shade_r"
-                    android:tag="@string/shade" />
-
-                <ImageButton
-                    android:id="@+id/shadeCubeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/shade_cube"
-                    android:onClick="changeAction"
-                    android:paddingBottom="@dimen/button_vertical_padding"
-                    android:paddingLeft="@dimen/button_horizontal_padding"
-                    android:paddingRight="@dimen/button_horizontal_padding"
-                    android:paddingTop="@dimen/button_vertical_padding"
-                    android:src="@drawable/action_shade_cube_r"
-                    android:tag="@string/shade_cube" />
 
             </TableRow>
 
@@ -251,12 +251,16 @@
                     android:paddingTop="@dimen/button_vertical_padding"
                     android:src="@drawable/paste" />
 
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                <ImageButton
+                    android:id="@+id/sceneOptionsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/paste"
+                    android:paddingBottom="@dimen/button_vertical_padding"
+                    android:paddingLeft="@dimen/button_horizontal_padding"
+                    android:paddingRight="@dimen/button_horizontal_padding"
+                    android:paddingTop="@dimen/button_vertical_padding"
+                    android:src="@drawable/palette" />
 
             </TableRow>
 
@@ -303,23 +307,6 @@
 
 
     </LinearLayout>
-
-    <com.ickphum.android.isoview.InteractiveLineGraphView
-        android:id="@+id/chart"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.5"
-        android:padding="@dimen/chart_padding"
-        android:visibility="gone"
-        app:axisColor="#d000"
-        app:axisThickness="2dp"
-        app:dataColor="#a6c"
-        app:dataThickness="8dp"
-        app:gridColor="#2000"
-        app:gridThickness="1dp"
-        app:labelSeparation="10dp"
-        app:labelTextColor="#d000"
-        app:labelTextSize="14sp" />
     
     <com.ickphum.android.isoview.GLIsoCanvas
         android:id="@+id/gLCanvas"
